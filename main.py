@@ -16,6 +16,9 @@ client = OpenAI(api_key=api_key)
 
 # prompt = ("If I have some ground beef, rice and mushrooms, give me a simple and easy recipe and instructions for a couple internationally themed dishes using the ingredients I have.")
 
+# Example prompt (uncommented so `prompt` is defined for the demo run)
+prompt = "If I have some ground beef, rice and mushrooms, give me a simple and easy recipe and instructions for a couple internationally themed dishes using the ingredients I have."
+
 response = client.responses.create(
     model="gpt-4.1-mini",
     input=prompt,
@@ -24,13 +27,15 @@ response = client.responses.create(
 def get_user_ingredients():
     while True:
         raw = input("Enter at least 3 ingredients you have available (separated by commas): ").strip()
-        ingredients = [i.strip() for i in raw.split(,) if i.strip()]
-        if len(ingredients) <= 3:
+        # split on a comma string (not a bare comma token)
+        ingredients = [i.strip() for i in raw.split(',') if i.strip()]
+        # require at least 3 ingredients before returning; keep prompting otherwise
+        if len(ingredients) >= 3:
             return ingredients
-        print ("You need to go shopping -- please enter 3 ingredients.\n")
+        print("You need to go shopping -- please enter 3 ingredients.\n")
 
 def get_dietary_restriction():
-    restriction = input("Please give any dietary restrctions -- vegan, Halal, diabetic-friendly etc: ")
+    restriction = input("Please give any dietary restrictions -- vegan, Halal, diabetic-friendly etc: ")
     return restriction.strip()
 
 def get_flavor_profile():
